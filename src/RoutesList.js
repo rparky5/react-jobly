@@ -3,6 +3,7 @@ import Homepage from "./Homepage";
 import CompanyList from "./CompanyList";
 import CompanyJobs from "./CompanyJobs";
 import Jobs from "./Jobs";
+import NotFoundPage from "./NotFoundPage";
 
 
 /** RoutesList component for all Routes
@@ -17,6 +18,7 @@ export default function RoutesList() {
       <Route path="/companies/:handle" element={<CompanyJobs />} />
       <Route path="/jobs" element={<Jobs />} />
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="/404" element={<NotFoundPage />} />
     </Routes>
   );
 }
