@@ -49,11 +49,25 @@ export default class JoblyApi {
     }
   }
 
-  // obviously, you'll add a lot here ...
+  /** Get list of all companies.
+   *  Optional filter queries of minEmployees, maxEmployees, nameLike
+   */
   static async getAllCompanies(params={}) {
     try {
       let res = await this.request(`companies`, params);
       return res.companies;
+    } catch (err) {
+      return err
+    }
+  }
+
+   /** Get list of all jobs.
+   *  Optional filter queries of minSalary, hasEquity, title
+   */
+  static async getAllJobs(params={}) {
+    try {
+      let res = await this.request(`jobs`, params);
+      return res.jobs;
     } catch (err) {
       return err
     }
