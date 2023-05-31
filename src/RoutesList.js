@@ -11,6 +11,8 @@ import NotFoundPage from "./NotFoundPage";
  * BrowserRouter -> RoutesList -> { Routes, [Route, ...] }
  */
 export default function RoutesList() {
+  // fn to get company by handle
+
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
