@@ -14,7 +14,8 @@ export default class JoblyApi {
   // Remember, the backend needs to be authorized with a token
   // We're providing a token you can use to interact with the backend API
   // DON'T MODIFY THIS TOKEN
-  static token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+  static token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
@@ -23,16 +24,18 @@ export default class JoblyApi {
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${JoblyApi.token}` };
-    const params = (method === "get")
-        ? data
-        : {};
+    const params = method === "get" ? data : {};
 
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.log("error from (non)response=", err);
+      if (err.response) {
+        console.error("API Error:", err.response);
+        let message = err.response.data.error.message;
+        throw Array.isArray(message) ? message : [message];
+      }
+      throw new Error(err.message);
     }
   }
 
@@ -41,35 +44,27 @@ export default class JoblyApi {
   /** Get details on a company by handle. */
 
   static async getCompany(handle) {
-    try {
-      let res = await this.request(`companies/${handle}`);
-      return res.company;
-    } catch (err) {
-      return err
-    }
+    let res = await this.request(`companies/${handle}`);
+    return res.company;
   }
 
   /** Get list of all companies.
    *  Optional filter queries of minEmployees, maxEmployees, nameLike
    */
-  static async getAllCompanies(params={}) {
-    try {
-      let res = await this.request(`companies`, params);
-      return res.companies;
-    } catch (err) {
-      return err
-    }
+  static async getAllCompanies(params = {}) {
+    let res = await this.request(`companies`, params);
+    return res.companies;
   }
 
-   /** Get list of all jobs.
+  /** Get list of all jobs.
    *  Optional filter queries of minSalary, hasEquity, title
    */
-  static async getAllJobs(params={}) {
+  static async getAllJobs(params = {}) {
     try {
       let res = await this.request(`jobs`, params);
       return res.jobs;
     } catch (err) {
-      return err
+      return err;
     }
   }
 }

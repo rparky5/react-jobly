@@ -20,9 +20,8 @@ export default function JobCard({
         <h3>Title: {title}</h3>
       </b>
       {companyName && <p>{companyName}</p>}
-      {/* TODO: add logic to handle missing data */}
-      <p>Salary: {salary}</p>
-      <p>Equity: {equity}</p>
+      {salary && <p>Salary: ${salary.toLocaleString()}</p>}
+      {equity && <p>Equity: {equity}</p>}
     </div>
   );
 }

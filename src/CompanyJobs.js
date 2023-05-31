@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import JobCardList from "./JobCardList";
 import JoblyApi from "./api";
@@ -21,17 +21,24 @@ export default function CompanyJobs() {
   const { handle } = useParams();
   const [company, setCompany] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  //TODO: add error handling
+  //TODO: add error handling for api
   useEffect(function getCompanyDetailOnMount() {
     async function getCompanyDetail(handle) {
-      const company = await JoblyApi.getCompany(handle);
-      setCompany(company);
-      setIsLoading(false);
+      try {
+        const company = await JoblyApi.getCompany(handle);
+        setCompany(company);
+        setIsLoading(false);
+      } catch (err) {
+        console.log('err', err)
+        setError(err);
+      }
     }
     getCompanyDetail(handle);
   }, []);
 
+  if (error) return <Navigate to={`/404`} />;
   if (isLoading) return <p>Loading...</p>;
 
   return (

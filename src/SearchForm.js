@@ -6,8 +6,7 @@ import { useState } from "react";
  * - search: handler passed down by parent to ping api and get search results
  *
  * State:
- * //TODO: state
- * - none
+ * - formData: { searchTerm } where searchTerm is a string
  *
  * {CompanyList, JobCardList} -> SearchForm
  */
@@ -26,17 +25,24 @@ export default function SearchForm({ search }) {
   // handle form submit
   function handleSubmit(evt) {
     evt.preventDefault();
-    search(formData);
+    const trimmedData = formData.searchTerm.trim()
+    if (trimmedData.length === 0) {
+      search({})
+    } else {
+
+      search({searchTerm: trimmedData});
+    }
   }
 
   return (
     <form className="SearchForm" onSubmit={handleSubmit}>
-      {/* TODO: add label */}
+      <label htmlFor="searchTerm">Search</label>
       <input
         type="text"
         placeholder="Enter search term..."
+        id="searchTerm"
         name="searchTerm"
-        value={formData.searchTerm}
+        value={formData.searchTerm || ''}
         onChange={handleChange}>
       </input>
       <button>Submit</button>

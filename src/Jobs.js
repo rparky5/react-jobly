@@ -38,7 +38,6 @@ export default function Jobs() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  //TODO: only want 1 job card list
   return (
     <div>
       <SearchForm search={searchJobs}/>
