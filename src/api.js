@@ -50,9 +50,9 @@ export default class JoblyApi {
   }
 
   // obviously, you'll add a lot here ...
-  static async getAllCompanies() {
+  static async getAllCompanies(params={}) {
     try {
-      let res = await this.request(`companies`);
+      let res = await this.request(`companies`, params);
       return res.companies;
     } catch (err) {
       return err

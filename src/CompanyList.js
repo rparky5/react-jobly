@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import JoblyApi from "./api";
 import CompanyCard from "./CompanyCard";
+import SearchForm from "./SearchForm";
 
 
 export default function CompanyList() {
@@ -15,10 +16,15 @@ export default function CompanyList() {
   }, []);
 
   // handler to pass search form
+  async function searchCompanies(formData) {
+    const {searchTerm} = formData;
+    const searchResult = await JoblyApi.getAllCompanies({nameLike: searchTerm});
+    setCompanies(searchResult);
+  }
 
   return (
     <div>
-      {/* Search form component goes here */}
+      <SearchForm search={searchCompanies}/>
       {companies.map((c) => (
         <CompanyCard key={c.handle} company={c} />
       ))}
