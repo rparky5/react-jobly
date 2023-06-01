@@ -60,11 +60,41 @@ export default class JoblyApi {
    *  Optional filter queries of minSalary, hasEquity, title
    */
   static async getAllJobs(params = {}) {
-    try {
       let res = await this.request(`jobs`, params);
       return res.jobs;
-    } catch (err) {
-      return err;
-    }
+  }
+
+  /** Login a user.
+   *  {username, password} -> {token}
+   */
+  static async login(username, password) {
+    let res = await this.request(`/auth/token`, {username, password}, "post");
+    return res.token;
+  }
+
+   /** Signup a user.
+   *  {username, password, firstName, lastName, email} -> {token}
+   */
+  static async signup(user) {
+    let res = await this.request(`/auth/register`, user, "post");
+    return res.token;
+  }
+
+   /** Update a user profile.
+   *  {username, firstName, lastName, password, email} -> {user}
+   */
+  static async updateProfile(user) {
+    const username = user.username;
+    delete user.username;
+    let res = await this.request(`/users/${username}`, user, "patch");
+    return res.user;
+  }
+
+  /** Get a user.
+   *  {token} -> {user}
+   */
+  static async getUser(token) {
+    let res = await this.request(`/users/${username}`, {token});
+    return res.user;
   }
 }

@@ -7,6 +7,9 @@ import NotFoundError from "./NotFoundError";
 import UnauthorizedError from "./UnauthorizedError";
 import BadRequestError from "./BadRequestError";
 import ServerError from "./SeverError";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import ProfileForm from "./ProfileForm";
 
 /** RoutesList component for all Routes
  *
@@ -15,16 +18,22 @@ import ServerError from "./SeverError";
 export default function RoutesList() {
   // fn to get company by handle
 
+  // TODO: pass in form logic
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/companies" element={<CompanyList />} />
       <Route path="/companies/:handle" element={<CompanyJobs />} />
       <Route path="/jobs" element={<Jobs />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/signup" element={<SignupForm />} />
+      <Route path="/profile" element={<ProfileForm />} />
+
       <Route path="/404" element={<NotFoundError />} />
       <Route path="/401" element={<UnauthorizedError />} />
       <Route path="/403" element={<BadRequestError />} />
       <Route path="/500" element={<ServerError />} />
+
       <Route path="*" element={<Navigate to="/404" />} />
     </Routes>
   );
