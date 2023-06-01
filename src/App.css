@@ -1,4 +1,4 @@
-.App {
+.App > :not(.navbar) {
   text-align: center;
 }
 

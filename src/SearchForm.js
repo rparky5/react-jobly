@@ -1,3 +1,4 @@
+import './SearchForm.css'
 import { useState } from "react";
 
 /** Form for users to search by name
@@ -36,7 +37,7 @@ export default function SearchForm({ search }) {
 
   return (
     <form className="SearchForm" onSubmit={handleSubmit}>
-      <label htmlFor="searchTerm">Search</label>
+      <label htmlFor="searchTerm">Search:</label>
       <input
         type="text"
         placeholder="Enter search term..."

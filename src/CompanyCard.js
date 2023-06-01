@@ -16,12 +16,14 @@ export default function CompanyCard({
   company: { handle, name, description, logoUrl },
 }) {
   return (
-    <Link className="CompanyCard" to={`/companies/${handle}`}>
-      <div className="card-body">
-        <img src={logoUrl} alt={name} />
-        <h3>{name}</h3>
-        <p>{description}</p>
-      </div>
-    </Link>
+    <div>
+      <Link className="CompanyCard card" to={`/companies/${handle}`}>
+        <div className="card-body">
+          <img src={logoUrl} alt={name} />
+          <h3>{name}</h3>
+          <p>{description}</p>
+        </div>
+      </Link>
+    </div>
   );
 }
