@@ -15,19 +15,18 @@ import ProfileForm from "./ProfileForm";
  *
  * BrowserRouter -> RoutesList -> { Routes, [Route, ...] }
  */
-export default function RoutesList() {
-  // fn to get company by handle
 
-  // TODO: pass in form logic
+export default function RoutesList({ login, signup, updateProfile }) {
+
   return (
-    <Routes>
+    <Routes >
       <Route path="/" element={<Homepage />} />
       <Route path="/companies" element={<CompanyList />} />
       <Route path="/companies/:handle" element={<CompanyJobs />} />
       <Route path="/jobs" element={<Jobs />} />
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/signup" element={<SignupForm />} />
-      <Route path="/profile" element={<ProfileForm />} />
+      <Route path="/login" element={<LoginForm login={login}/>} />
+      <Route path="/signup" element={<SignupForm signup={signup} />} />
+      <Route path="/profile" element={<ProfileForm updateProfile={updateProfile}/>} />
 
       <Route path="/404" element={<NotFoundError />} />
       <Route path="/401" element={<UnauthorizedError />} />

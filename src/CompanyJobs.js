@@ -23,7 +23,6 @@ export default function CompanyJobs() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //TODO: add error handling for api
   useEffect(function getCompanyDetailOnMount() {
     async function getCompanyDetail(handle) {
       try {
