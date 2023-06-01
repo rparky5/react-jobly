@@ -1,6 +1,9 @@
 import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SignupForm({ signup }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(
     {
       username:'',
@@ -19,9 +22,10 @@ export default function SignupForm({ signup }) {
   }
 
   // handle form submit
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    signup(formData);
+    await signup(formData);
+    navigate("/");
   }
 
   return (
@@ -39,7 +43,7 @@ export default function SignupForm({ signup }) {
         </label>
         <label>Password
           <input
-            type="text"
+            type="password"
             placeholder="password"
             id="password"
             name="password"

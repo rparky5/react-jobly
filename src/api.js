@@ -14,10 +14,11 @@ export default class JoblyApi {
   // Remember, the backend needs to be authorized with a token
   // We're providing a token you can use to interact with the backend API
   // DON'T MODIFY THIS TOKEN
-  static token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-    "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-    "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  // static token =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+  //   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+  //   "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  static token;
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
@@ -68,7 +69,8 @@ export default class JoblyApi {
    *  {username, password} -> {token}
    */
   static async login(username, password) {
-    let res = await this.request(`/auth/token`, {username, password}, "post");
+    let res = await this.request(`auth/token`, {username, password}, "post");
+    this.token = res.token;
     return res.token;
   }
 
@@ -76,25 +78,26 @@ export default class JoblyApi {
    *  {username, password, firstName, lastName, email} -> {token}
    */
   static async signup(user) {
-    let res = await this.request(`/auth/register`, user, "post");
+    console.log("user", user)
+    let res = await this.request(`auth/register`, user, "post");
+    this.token = res.token;
     return res.token;
   }
 
    /** Update a user profile.
    *  {username, firstName, lastName, password, email} -> {user}
    */
-  static async updateProfile(user) {
-    const username = user.username;
-    delete user.username;
-    let res = await this.request(`/users/${username}`, user, "patch");
+  static async updateProfile(username, updatedData) {
+    let res = await this.request(`users/${username}`, updatedData, "patch");
     return res.user;
   }
 
   /** Get a user.
-   *  {token} -> {user}
+   *  {username, token} -> {user}
    */
-  static async getUser(token) {
-    let res = await this.request(`/users/${username}`, {token});
+  static async getUser(username) {
+
+    let res = await this.request(`users/${username}`, {token: this.token});
     return res.user;
   }
 }

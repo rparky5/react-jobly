@@ -22,7 +22,9 @@ export default function ProfileForm({ updateProfile }) {
   // handle form submit
   function handleSubmit(evt) {
     evt.preventDefault();
-    updateProfile(formData);
+    const updatedData = {...formData};
+    delete updatedData.username;
+    updateProfile(updatedData);
   }
 
   return (
@@ -36,7 +38,8 @@ export default function ProfileForm({ updateProfile }) {
             placeholder="username"
             id="username"
             name="username"
-            value={formData.username} />
+            value={formData.username}
+            onChange={handleChange} />
         </label>
         <label>First Name
           <input

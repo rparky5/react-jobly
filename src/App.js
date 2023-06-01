@@ -7,6 +7,7 @@ import JoblyApi from "./api";
 import jwt_decode from "jwt-decode";
 import userContext from "./userContext";
 
+
 function App() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -22,10 +23,16 @@ function App() {
         setError(err);
       }
     }
-    getUser();
+
+    if (!token) {
+      setUser(null);
+    } else {
+      getUser();
+    }
   },
     [token]
   );
+
 
   async function login({ username, password }) {
     try {
@@ -36,7 +43,7 @@ function App() {
     }
   }
 
-  // requires username, password, firstName, lastName, email
+
   async function signup(user) {
     try {
       const signupRes = await JoblyApi.signup(user);
@@ -46,23 +53,27 @@ function App() {
     }
   }
 
-  // requires firstName, lastName, password, email
-  async function updateProfile(user) {
+  function logout() {
+    setToken('');
+  }
+
+  async function updateProfile(updatedData) {
     try {
-      const updateRes = await JoblyApi.updateProfile(user);
+      const updateRes = await JoblyApi.updateProfile(user.username, updatedData);
       setUser(updateRes);
     } catch (err) {
       setError(err);
     }
   }
 
-  if (error) return <Navigate to={`/404`} />;
+  // TODO: dynamic errors
+  if (error) return <Navigate to={`/${error.status}`} />;
 
   return (
     <div className="App">
       <userContext.Provider value={user}>
         <BrowserRouter>
-          <Nav />
+          <Nav logout={logout} />
           <RoutesList login={login} signup={signup} updateProfile={updateProfile} />
         </BrowserRouter>
       </userContext.Provider>

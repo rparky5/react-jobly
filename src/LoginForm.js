@@ -1,7 +1,9 @@
 import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm({ login }) {
   const [formData, setFormData] = useState({username:'', password:''});
+  const navigate = useNavigate();
 
   // update formData state on change
   function handleChange(evt) {
@@ -12,9 +14,10 @@ export default function LoginForm({ login }) {
   }
 
   // handle form submit
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    login(formData);
+    await login(formData);
+    navigate("/");
   }
 
   return (
@@ -32,7 +35,7 @@ export default function LoginForm({ login }) {
         </label>
         <label>Password
           <input
-            type="text"
+            type="password"
             placeholder="password"
             id="password"
             name="password"
