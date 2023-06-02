@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignupForm({ signup }) {
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState(
     {
       username:'',
@@ -24,16 +25,24 @@ export default function SignupForm({ signup }) {
   // handle form submit
   async function handleSubmit(evt) {
     evt.preventDefault();
-    await signup(formData);
-    navigate("/");
+    try {
+      await signup(formData);
+      navigate("/");
+    } catch (err) {
+      setError(err);
+    }
   }
+
+
 
   return (
     <div className='SignupForm'>
       <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
+        {error && <p>{error}</p>}
         <label>Username
           <input
+            required
             type="text"
             placeholder="username"
             id="username"
@@ -43,6 +52,7 @@ export default function SignupForm({ signup }) {
         </label>
         <label>Password
           <input
+            required
             type="password"
             placeholder="password"
             id="password"
@@ -52,6 +62,7 @@ export default function SignupForm({ signup }) {
         </label>
         <label>First Name
           <input
+            required
             type="text"
             placeholder="First Name"
             id="firstName"
@@ -61,6 +72,7 @@ export default function SignupForm({ signup }) {
         </label>
         <label>Last Name
           <input
+            required
             type="text"
             placeholder="Last Name"
             id="lastName"
@@ -70,6 +82,7 @@ export default function SignupForm({ signup }) {
         </label>
         <label>Email
           <input
+            required
             type="text"
             placeholder="Email"
             id="email"

@@ -3,6 +3,7 @@ import userContext from "./userContext";
 
 export default function ProfileForm({ updateProfile }) {
   const { username, firstName, lastName, email } = useContext(userContext);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState(
     {
       username,
@@ -20,17 +21,22 @@ export default function ProfileForm({ updateProfile }) {
   }
 
   // handle form submit
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
     const updatedData = {...formData};
     delete updatedData.username;
-    updateProfile(updatedData);
+    try {
+      await updateProfile(updatedData);
+    } catch (err) {
+      setError(err);
+    }
   }
 
   return (
     <div className='ProfileForm'>
       <h2>Profile</h2>
       <form onSubmit={handleSubmit}>
+        {error && <p>{error}</p>}
         <label>Username
           <input
             disabled

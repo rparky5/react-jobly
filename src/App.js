@@ -13,6 +13,15 @@ function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState("");
 
+  useEffect(function getTokenOnMount() {
+    function getToken() {
+      const storedToken = localStorage.getItem('token');
+      setToken(storedToken);
+      JoblyApi.token = storedToken;
+    }
+    getToken();
+  }, []);
+
   useEffect(function getUserOnLogin() {
     async function getUser() {
       const decoded = jwt_decode(token);
@@ -29,45 +38,34 @@ function App() {
     } else {
       getUser();
     }
-  },
-    [token]
-  );
+  }, [token]);
 
 
   async function login({ username, password }) {
-    try {
-      const newToken = await JoblyApi.login(username, password);
-      setToken(newToken);
-    } catch (err) {
-      setError(err);
-    }
+    const newToken = await JoblyApi.login(username, password);
+    setToken(newToken);
   }
 
 
   async function signup(user) {
-    try {
-      const signupRes = await JoblyApi.signup(user);
-      setToken(signupRes);
-    } catch (err) {
-      setError(err);
-    }
+    const signupRes = await JoblyApi.signup(user);
+    setToken(signupRes)
   }
 
   function logout() {
     setToken('');
+    localStorage.removeItem("token");
   }
 
   async function updateProfile(updatedData) {
-    try {
-      const updateRes = await JoblyApi.updateProfile(user.username, updatedData);
-      setUser(updateRes);
-    } catch (err) {
-      setError(err);
-    }
+    const updateRes = await JoblyApi.updateProfile(user.username, updatedData);
+    setUser(updateRes);
   }
 
+
   // TODO: dynamic errors
-  if (error) return <Navigate to={`/${error.status}`} />;
+  if (error) return <Navigate to={`/404`} />;
+  if (token) localStorage.setItem("token", token);
 
   return (
     <div className="App">

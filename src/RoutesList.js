@@ -18,23 +18,33 @@ import ProfileForm from "./ProfileForm";
 
 export default function RoutesList({ login, signup, updateProfile }) {
   // TODO: use context for user and guard against unauthorized route access
+  const storedToken = localStorage.getItem('token');
 
   return (
     <Routes >
       <Route path="/" element={<Homepage />} />
-      <Route path="/companies" element={<CompanyList />} />
-      <Route path="/companies/:handle" element={<CompanyJobs />} />
-      <Route path="/jobs" element={<Jobs />} />
-      <Route path="/login" element={<LoginForm login={login}/>} />
-      <Route path="/signup" element={<SignupForm signup={signup} />} />
-      <Route path="/profile" element={<ProfileForm updateProfile={updateProfile}/>} />
 
       <Route path="/404" element={<NotFoundError />} />
       <Route path="/401" element={<UnauthorizedError />} />
       <Route path="/403" element={<BadRequestError />} />
       <Route path="/500" element={<ServerError />} />
 
-      <Route path="*" element={<Navigate to="/404" />} />
+      <Route path="*" element={<Navigate to="/" />} />
+
+      {storedToken &&
+        <>
+          <Route path="/companies" element={<CompanyList />} />
+          <Route path="/companies/:handle" element={<CompanyJobs />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/profile" element={<ProfileForm updateProfile={updateProfile} />} />
+        </>
+      }
+      {!storedToken &&
+        < >
+          <Route path="/login" element={<LoginForm login={login} />} />
+          <Route path="/signup" element={<SignupForm signup={signup} />} />
+        </ >
+      }
     </Routes>
   );
 }
