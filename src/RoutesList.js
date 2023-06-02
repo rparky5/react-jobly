@@ -11,8 +11,6 @@ import ProfileForm from "./ProfileForm";
 import ServerError from "./SeverError";
 import NotFoundError from "./NotFoundError";
 import UnauthorizedError from "./UnauthorizedError";
-import BadRequestError from "./BadRequestError";
-
 
 /** RoutesList component for all Routes
  *
@@ -28,26 +26,23 @@ export default function RoutesList({ login, signup, updateProfile }) {
 
       <Route path="/404" element={<NotFoundError />} />
       <Route path="/401" element={<UnauthorizedError />} />
-      <Route path="/403" element={<BadRequestError />} />
       <Route path="/500" element={<ServerError />} />
-
-      <Route path="*" element={<Navigate to="/" />} />
 
       {user && (
         <>
           <Route path="/companies" element={<CompanyList />} />
           <Route path="/companies/:handle" element={<CompanyJobs />} />
           <Route path="/jobs" element={<Jobs />} />
-          <Route
-            path="/profile"
-            element={<ProfileForm updateProfile={updateProfile} />}
-          />
+          <Route path="/profile" element={<ProfileForm updateProfile={updateProfile} />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </>
       )}
       {!user && (
         <>
           <Route path="/login" element={<LoginForm login={login} />} />
           <Route path="/signup" element={<SignupForm signup={signup} />} />
+          <Route path="*" element={<Navigate to="/401" />} />
+
         </>
       )}
     </Routes>

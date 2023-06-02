@@ -14,6 +14,7 @@ import SearchForm from "./SearchForm";
  * - companies: array of companies like:
  *    [{ handle, name, description, numEmployees, logoUrl }, ...]
  * - isLoading: boolean based on waiting to get results from api
+ * - error: any errors that occur while trying to get company data
  *
  * Routes -> CompanyList -> {CompanyCard, SearchForm}
  */
@@ -21,7 +22,7 @@ import SearchForm from "./SearchForm";
 export default function CompanyList() {
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [networkError, setNetworkError] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(function getCompaniesOnMount() {
     async function getAllCompaniesFromAPI() {
@@ -30,7 +31,7 @@ export default function CompanyList() {
         setCompanies(companiesResponse);
         setIsLoading(false);
       } catch (err) {
-        setNetworkError(true);
+        setError(true);
       }
     }
     getAllCompaniesFromAPI();
@@ -38,12 +39,16 @@ export default function CompanyList() {
 
   // Handler to pass search form. Gets search results from api
   async function searchCompanies(formData) {
-    const {searchTerm} = formData;
-    const searchResult = await JoblyApi.getAllCompanies({nameLike: searchTerm});
-    setCompanies(searchResult);
+    try {
+      const {searchTerm} = formData;
+      const searchResult = await JoblyApi.getAllCompanies({nameLike: searchTerm});
+      setCompanies(searchResult);
+    } catch (err) {
+      setError(err);
+    }
   }
 
-  if (networkError) return <Navigate to="/500"/>
+  if (error) return <Navigate to="/500"/>
   if (isLoading) return <p>Loading...</p>;
 
   return (

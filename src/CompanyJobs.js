@@ -13,6 +13,7 @@ import JoblyApi from "./api";
  *    { handle, name, description, numEmployees, logoUrl, jobs }
  *    where jobs is [{ id, title, salary, equity }, ...]
  * - isLoading: boolean based on waiting to get results from api
+ * - error: any errors that occur while trying to get company data
  *
  * Routes -> CompanyJobs -> JobCardList
  */

@@ -1,5 +1,7 @@
+/** Not Found Error component */
+
 export default function NotFoundError() {
   return (
-    <h1>Ooops! No record found!</h1>
+    <h1>Oops! No record found!</h1>
   )
 }

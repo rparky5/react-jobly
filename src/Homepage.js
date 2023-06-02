@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import userContext from "./userContext";
 import { Link } from "react-router-dom";
+import './Homepage.css'
 
 /** Homepage view
  *

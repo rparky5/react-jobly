@@ -2,11 +2,23 @@ import { useState, useContext } from "react";
 import userContext from "./userContext";
 import Alert from "./Alert";
 
+/** Profile update form component
+ *
+ * Props:
+ * - updateProfile: fn passed down from parent to update user data
+ *
+ * State:
+ * - error: any errors that occur while trying to update user data
+ * - message: messages passed into alert components indicating successful update
+ * - formData: controlled user form inputs
+ *
+ * RoutesList -> ProfileForm
+ */
+
 export default function ProfileForm({ updateProfile }) {
   const { username, firstName, lastName, email } = useContext(userContext);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
-
   const [formData, setFormData] = useState({
     username,
     firstName,
@@ -41,7 +53,7 @@ export default function ProfileForm({ updateProfile }) {
       <form onSubmit={handleSubmit}>
         {error && <Alert message={error} alertClass="danger" />}
         {message && <Alert message={message} alertClass="success" />}
-        <div class="mb-3">
+        <div className="mb-3">
           <label className="form-label">
             Username
             <input
@@ -56,7 +68,7 @@ export default function ProfileForm({ updateProfile }) {
             />
           </label>
         </div>
-        <div class="mb-3">
+        <div className="mb-3">
           <label className="form-label">
             First Name
             <input
@@ -70,7 +82,7 @@ export default function ProfileForm({ updateProfile }) {
             />
           </label>
         </div>
-        <div class="mb-3">
+        <div className="mb-3">
           <label className="form-label">
             Last Name
             <input
@@ -84,7 +96,7 @@ export default function ProfileForm({ updateProfile }) {
             />
           </label>
         </div>
-        <div class="mb-3">
+        <div className="mb-3">
           <label className="form-label">
             Email
             <input
