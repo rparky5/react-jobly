@@ -11,23 +11,31 @@ import userContext from "./userContext";
 function App() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem('token') || "");
+  const [isLoading, setIsLoading] = useState(token && !user);
 
-  useEffect(function getTokenOnMount() {
-    function getToken() {
-      const storedToken = localStorage.getItem('token');
-      setToken(storedToken);
-      JoblyApi.token = storedToken;
+  useEffect(function getUserOnMountIfToken() {
+    async function getUserIfToken() {
+      JoblyApi.token = token;
+      const decoded = jwt_decode(token);
+      try {
+        const user = await JoblyApi.getUser(decoded.username);
+        setUser(user);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err);
+      }
     }
-    getToken();
+    if (token) getUserIfToken();
   }, []);
 
-  useEffect(function getUserOnLogin() {
+  useEffect(function getUserOnLoginOrSignup() {
     async function getUser() {
       const decoded = jwt_decode(token);
       try {
         const user = await JoblyApi.getUser(decoded.username);
         setUser(user);
+        setIsLoading(false);
       } catch (err) {
         setError(err);
       }
@@ -44,12 +52,14 @@ function App() {
   async function login({ username, password }) {
     const newToken = await JoblyApi.login(username, password);
     setToken(newToken);
+    setIsLoading(true);
   }
 
 
   async function signup(user) {
     const signupRes = await JoblyApi.signup(user);
     setToken(signupRes)
+    setIsLoading(true);
   }
 
   function logout() {
@@ -64,8 +74,11 @@ function App() {
 
 
   // TODO: dynamic errors
+  console.log('error', error)
   if (error) return <Navigate to={`/404`} />;
   if (token) localStorage.setItem("token", token);
+
+  if(isLoading) return <p>Loading...</p>
 
   return (
     <div className="App">

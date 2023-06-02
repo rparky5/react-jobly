@@ -83,7 +83,7 @@ export default function SignupForm({ signup }) {
         <label>Email
           <input
             required
-            type="text"
+            type="email"
             placeholder="Email"
             id="email"
             name="email"

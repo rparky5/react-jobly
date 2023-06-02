@@ -1,81 +1,105 @@
-import { useState, useContext } from 'react';
+import { useState, useContext } from "react";
 import userContext from "./userContext";
+import Alert from "./Alert";
 
 export default function ProfileForm({ updateProfile }) {
   const { username, firstName, lastName, email } = useContext(userContext);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState(
-    {
-      username,
-      firstName,
-      lastName,
-      email
+  const [message, setMessage] = useState("");
+
+  const [formData, setFormData] = useState({
+    username,
+    firstName,
+    lastName,
+    email,
   });
 
   // update formData state on change
   function handleChange(evt) {
-    setFormData(formData => ({
+    setFormData((formData) => ({
       ...formData,
-      [evt.target.name]: evt.target.value
-    }))
+      [evt.target.name]: evt.target.value,
+    }));
   }
 
   // handle form submit
   async function handleSubmit(evt) {
     evt.preventDefault();
-    const updatedData = {...formData};
+    const updatedData = { ...formData };
     delete updatedData.username;
     try {
       await updateProfile(updatedData);
+      setMessage("Successfully updated your profile!");
     } catch (err) {
       setError(err);
     }
   }
 
   return (
-    <div className='ProfileForm'>
+    <div className="ProfileForm">
       <h2>Profile</h2>
       <form onSubmit={handleSubmit}>
-        {error && <p>{error}</p>}
-        <label>Username
-          <input
-            disabled
-            type="text"
-            placeholder="username"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange} />
-        </label>
-        <label>First Name
-          <input
-            type="text"
-            placeholder="First Name"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange} />
-        </label>
-        <label>Last Name
-          <input
-            type="text"
-            placeholder="Last Name"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange} />
-        </label>
-        <label>Email
-          <input
-            type="text"
-            placeholder="Email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange} />
-        </label>
-        <button>Submit</button>
+        {error && <Alert message={error} alertClass="danger" />}
+        {message && <Alert message={message} alertClass="success" />}
+        <div class="mb-3">
+          <label className="form-label">
+            Username
+            <input
+              disabled
+              type="text"
+              className="form-control"
+              placeholder="username"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <div class="mb-3">
+          <label className="form-label">
+            First Name
+            <input
+              type="text"
+              className="form-control"
+              placeholder="First Name"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <div class="mb-3">
+          <label className="form-label">
+            Last Name
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Last Name"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <div class="mb-3">
+          <label className="form-label">
+            Email
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <button className="btn btn-primary">Submit</button>
       </form>
     </div>
-  )
+  );
 }
