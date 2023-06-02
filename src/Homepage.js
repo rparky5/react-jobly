@@ -2,6 +2,17 @@ import { useContext } from "react";
 import userContext from "./userContext";
 import { Link } from "react-router-dom";
 
+/** Homepage view
+ *
+ * Props:
+ * - none
+ *
+ * State:
+ * - none
+ *
+ * RoutesList -> Homepage
+ */
+
 export default function Homepage() {
   const user  = useContext(userContext);
 

@@ -20,7 +20,6 @@ import BadRequestError from "./BadRequestError";
  */
 
 export default function RoutesList({ login, signup, updateProfile }) {
-  // TODO: use context for user and guard against unauthorized route access
   const user = useContext(userContext);
 
   return (
