@@ -1,15 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import userContext from "./userContext";
 import Homepage from "./Homepage";
 import CompanyList from "./CompanyList";
 import CompanyJobs from "./CompanyJobs";
 import Jobs from "./Jobs";
-import NotFoundError from "./NotFoundError";
-import UnauthorizedError from "./UnauthorizedError";
-import BadRequestError from "./BadRequestError";
-import ServerError from "./SeverError";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import ProfileForm from "./ProfileForm";
+import ServerError from "./SeverError";
+import NotFoundError from "./NotFoundError";
+import UnauthorizedError from "./UnauthorizedError";
+import BadRequestError from "./BadRequestError";
+
 
 /** RoutesList component for all Routes
  *
@@ -18,10 +21,10 @@ import ProfileForm from "./ProfileForm";
 
 export default function RoutesList({ login, signup, updateProfile }) {
   // TODO: use context for user and guard against unauthorized route access
-  const storedToken = localStorage.getItem('token');
+  const user = useContext(userContext);
 
   return (
-    <Routes >
+    <Routes>
       <Route path="/" element={<Homepage />} />
 
       <Route path="/404" element={<NotFoundError />} />
@@ -31,20 +34,23 @@ export default function RoutesList({ login, signup, updateProfile }) {
 
       <Route path="*" element={<Navigate to="/" />} />
 
-      {storedToken &&
+      {user && (
         <>
           <Route path="/companies" element={<CompanyList />} />
           <Route path="/companies/:handle" element={<CompanyJobs />} />
           <Route path="/jobs" element={<Jobs />} />
-          <Route path="/profile" element={<ProfileForm updateProfile={updateProfile} />} />
+          <Route
+            path="/profile"
+            element={<ProfileForm updateProfile={updateProfile} />}
+          />
         </>
-      }
-      {!storedToken &&
-        < >
+      )}
+      {!user && (
+        <>
           <Route path="/login" element={<LoginForm login={login} />} />
           <Route path="/signup" element={<SignupForm signup={signup} />} />
-        </ >
-      }
+        </>
+      )}
     </Routes>
   );
 }
