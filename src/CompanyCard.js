@@ -19,7 +19,7 @@ export default function CompanyCard({
     <div>
       <Link className="CompanyCard card" to={`/companies/${handle}`}>
         <div className="card-body">
-          <img src={logoUrl} alt={name} />
+          {logoUrl && <img src={logoUrl} alt={name} />}
           <h3>{name}</h3>
           <p>{description}</p>
         </div>

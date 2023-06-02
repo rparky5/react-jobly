@@ -36,17 +36,24 @@ export default function SearchForm({ search }) {
   }
 
   return (
-    <form className="SearchForm" onSubmit={handleSubmit}>
-      <label htmlFor="searchTerm">Search:</label>
-      <input
-        type="text"
-        placeholder="Enter search term..."
-        id="searchTerm"
-        name="searchTerm"
-        value={formData.searchTerm || ''}
-        onChange={handleChange}>
-      </input>
-      <button>Submit</button>
+    <form className="SearchForm " onSubmit={handleSubmit}>
+      <div className='row justify-content-center justify-content-lg-start gx-0 align-items-center'>
+        <div className='col-6'>
+          <input
+            aria-label="search"
+            type="text"
+            className="form-control form-control-lg"
+            placeholder="Enter search term..."
+            id="searchTerm"
+            name="searchTerm"
+            value={formData.searchTerm || ''}
+            onChange={handleChange}>
+          </input>
+        </div>
+        <div className='col-auto'>
+          <button className="btn btn-primary btn-lg mx-0">Submit</button>
+        </div>
+      </div>
     </form>
   )
 }

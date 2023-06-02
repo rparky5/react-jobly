@@ -17,7 +17,7 @@ export default function JobCard({
   return (
     <div className="JobCard">
       <b>
-        <h3>Title: {title}</h3>
+        <h3>{title}</h3>
       </b>
       {companyName && <p>{companyName}</p>}
       {salary && <p>Salary: ${salary.toLocaleString()}</p>}

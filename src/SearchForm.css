@@ -1,7 +1,7 @@
 .SearchForm {
-    margin-top: 2rem;
+    margin: 3rem;
 }
 
-#searchTerm {
-    margin: 0.5rem;
+.btn {
+    margin: 0;
 }
